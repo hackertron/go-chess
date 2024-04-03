@@ -30,7 +30,7 @@ func CreateMigrationsTable(dbs *sql.DB) {
 	if err != nil {
 		log.Fatal("error in creating users table : ", err)
 	}
-	_, err = dbs.Exec(`CREATE TABLE user_info (
+	_, err = dbs.Exec(`CREATE TABLE IF NOT EXISTS user_info (
 		user_id INTEGER PRIMARY KEY,
 		user_rank TEXT DEFAULT 'beginner' CHECK (user_rank IN ('beginner', 'intermediate', 'advanced', 'expert')),
 		user_points INTEGER DEFAULT 1000,
@@ -66,7 +66,21 @@ func CreateUser(dbs *sql.DB, users Users) (user Users, userInfo UserInfo, err er
 	if err != nil {
 		log.Fatal("error in getting user : ", err)
 	}
-	err = dbs.QueryRow("SELECT * FROM user_info WHERE user_id = $1", uiLastId).Scan(&ui.User_id, &ui.Username, &ui.UserRank, &ui.UserRating)
+	err = dbs.QueryRow("SELECT * FROM user_info WHERE user_id = $1", uiLastId).Scan(&ui.User_id, &ui.UserRank, &ui.UserPoints)
+	if err != nil {
+		log.Fatal("error in getting user info : ", err)
+	}
+	return u, ui, err
+}
+
+func GetUser(dbs *sql.DB) (user Users, userInfo UserInfo, err error) {
+	var u Users
+	var ui UserInfo
+	err = dbs.QueryRow("SELECT * FROM users WHERE id = 1").Scan(&u.Id, &u.Username, &u.Email, &u.Password)
+	if err != nil {
+		log.Fatal("error in getting user : ", err)
+	}
+	err = dbs.QueryRow("SELECT * FROM user_info WHERE user_id = 1").Scan(&ui.User_id, &ui.UserRank, &ui.UserPoints)
 	if err != nil {
 		log.Fatal("error in getting user info : ", err)
 	}

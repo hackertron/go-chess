@@ -9,7 +9,6 @@ type Users struct {
 
 type UserInfo struct {
 	User_id    int    `json:"user_id"`
-	Username   string `json:"username"`
 	UserRank   string `json:"user_rank"`
-	UserRating int    `json:"user_rating"`
+	UserPoints int    `json:"user_points"`
 }
