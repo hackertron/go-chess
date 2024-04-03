@@ -1,56 +1,50 @@
 package main
 
 import (
+	"database/sql"
+	"fmt"
+	"log"
 	"net/http"
 
-	"github.com/hackertron/go-chess/db"
-	"github.com/hackertron/go-chess/handlers"
-	"github.com/hackertron/go-chess/services"
+	"github.com/hackertron/go-chess/internal/db"
 	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	_ "github.com/mattn/go-sqlite3"
 )
 
-// In production, the name of the database
-// would be obtained from an .env file
-const dbName = "chess.db"
-
-func main() {
-	app := echo.New()
-
-	app.HTTPErrorHandler = handlers.CustomHTTPErrorHandler
-
-	app.Static("/", "assets")
-	app.Use(middleware.Logger())
-
-	// We redirect the root route to the "/user" route
-	app.GET("/", func(c echo.Context) error {
-		return c.Redirect(http.StatusMovedPermanently, "/user")
-	})
-
-	uStore, err := db.NewUserStore(dbName)
-	if err != nil {
-		app.Logger.Fatalf("failed to create store: %s", err)
-	}
-
-	us := services.NewServicesUser(services.User{}, uStore)
-
-	h := handlers.New(us)
-
-	handlers.SetupRoutes(app, h)
-
-	app.Logger.Fatal(app.Start(":5000"))
+type db_sql struct {
+	db *sql.DB
 }
 
-/*
-https://www.reddit.com/r/golang/comments/17d12wk/using_echo_with_ahtempl/
+func main() {
+	fmt.Println("Go-Chess go brrr 🚀🚀")
 
-https://templ.guide/project-structure/project-structure
-https://github.com/a-h/templ/tree/main/examples/counter
+	e := echo.New()
+	db_sql, err := db.ConnectToDB("chess.db")
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer db.CloseDB(db_sql)
+	db.CreateMigrationsTable(db_sql)
 
-https://echo.labstack.com/docs
+	e.GET("/", func(c echo.Context) error {
+		return c.String(http.StatusOK, "Hello, World!")
+	})
 
-https://www.reddit.com/r/golang/comments/vggekd/whats_the_usage_of_error_in_echo_framework/
-https://echo.labstack.com/docs/error-handling
-https://medium.com/@emretiryaki3/custom-error-handling-for-echo-web-framework-go-152992ab9cce
-https://sorcererxw.com/en/articles/go-echo-error-handing
-*/
+	group := e.Group("/user")
+	group.POST("/create", func(c echo.Context) error {
+		var users db.Users
+		if err := c.Bind(&users); err != nil {
+			return err
+		}
+		user, userInfo, err := db.CreateUser(db_sql, users)
+		if err != nil {
+			return err
+		}
+		fmt.Println(user)
+		fmt.Println(userInfo)
+		return c.JSON(http.StatusOK, user)
+	})
+
+	e.Logger.Fatal(e.Start("localhost:8080"))
+
+}
