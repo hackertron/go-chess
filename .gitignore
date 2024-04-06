@@ -23,6 +23,7 @@ go.work
 tmp
 bin
 *.db
+chess.db
 
 # tailwinds bs
 node_modules/
