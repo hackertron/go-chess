@@ -20,6 +20,8 @@ func main() {
 	fmt.Println("Go-Chess go brrr 🚀🚀")
 
 	e := echo.New()
+	// static files
+	e.Static("/static", "assets")
 	db_sql, err := db.ConnectToDB("chess.db")
 	if err != nil {
 		log.Fatal(err)

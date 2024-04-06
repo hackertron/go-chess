@@ -3,26 +3,44 @@ package views
 
 templ Base() {
 	<!DOCTYPE html>
-	<html lang="en" data-theme="dark">
+	<html lang="en" data-theme="winter">
 		<head>
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<meta
  				name="description"
- 				content="job portal example demo app using golang"
+ 				content="chess website using golang htmx tailwindcss and daisyui"
 			/>
 			<meta name="google" content="notranslate"/>
 			<link rel="shortcut icon" href="/img/templ.png" type="image/png"/>
-			<script src="https://cdn.tailwindcss.com"></script>
 			<link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.10/dist/full.min.css" rel="stylesheet" type="text/css"/>
-			<link rel="stylesheet" href="/css/styles.css"/>
+			<link href="/static/output.css" rel="stylesheet" type="text/css"/>
 			<title>Chess</title>
 			<script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
 		</head>
 		<body class="sample-transition" hx-boost="true">
-			<main class="pt-40">
-				{ children... }
-			</main>
-		</body>
+    <div class="navbar bg-base-100">
+      <div class="flex-1">
+        <a class="btn btn-ghost text-xl">Go Chess</a>
+      </div>
+      <div class="flex-none">
+        <ul class="menu menu-horizontal px-1">
+          <li><a href="/user/create">Register</a></li>
+          <li>
+            <details>
+              <summary>
+                Parent
+              </summary>
+              <ul class="p-2 bg-base-100 rounded-t-none">
+                <li><a>Link 1</a></li>
+                <li><a>Link 2</a></li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
+    </div>
+	{ children... }	
+	</body>
 	</html>
 }

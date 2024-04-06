@@ -7,5 +7,7 @@ import (
 func SetupRoutes(app *echo.Echo) {
 	group := app.Group("/user")
 	group.POST("/create", CreateUser)
-	group.GET("/", GetUser)
+	group.GET("/create", CreateUserPage)
+	group.GET("/login", LoginUserPage)
+	group.POST("/login", LoginUser)
 }
