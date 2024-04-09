@@ -8,6 +8,7 @@ import (
 
 	"github.com/hackertron/go-chess/internal/db"
 	"github.com/hackertron/go-chess/internal/handlers"
+	"github.com/hackertron/go-chess/internal/middlewares"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -28,6 +29,14 @@ func main() {
 	}
 	db.CreateMigrationsTable(db_sql)
 	db.CloseDB(db_sql)
+
+	sessions := middlewares.NewSessions()
+	e.Pre(func(next echo.HandlerFunc) echo.HandlerFunc {
+		return func(c echo.Context) error {
+			c.Set("sessions", sessions)
+			return next(c)
+		}
+	})
 
 	e.GET("/", func(c echo.Context) error {
 		return c.String(http.StatusOK, "Hello, World!")

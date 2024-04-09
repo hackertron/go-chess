@@ -1,0 +1,17 @@
+package views
+
+import (
+	"github.com/hackertron/go-chess/internal/db"
+)
+
+templ Dashboard(showBase bool, user db.Users, userInfo db.UserInfo) {
+	if (showBase) {
+		@Base()
+	}
+	<div>
+		<h1 class="text-5xl font-bold mb-4">{ user.Username }</h1>
+		<h2 class="text-3xl font-bold mb-4">{ user.Email }</h2>
+		<h3 class="text-2xl font-bold mb-4">{ userInfo.UserRank }</h3>
+		<h4 class="text-xl font-bold mb-4">{ userInfo.UserRank }</h4>
+	</div>
+}
