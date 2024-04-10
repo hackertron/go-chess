@@ -2,16 +2,78 @@ package views
 
 import (
 	"github.com/hackertron/go-chess/internal/db"
+	"strconv"
 )
 
 templ Dashboard(showBase bool, user db.Users, userInfo db.UserInfo) {
 	if (showBase) {
 		@Base()
 	}
-	<div>
-		<h1 class="text-5xl font-bold mb-4">{ user.Username }</h1>
-		<h2 class="text-3xl font-bold mb-4">{ user.Email }</h2>
-		<h3 class="text-2xl font-bold mb-4">{ userInfo.UserRank }</h3>
-		<h4 class="text-xl font-bold mb-4">{ userInfo.UserRank }</h4>
+	<div class="card card-normal w-96 bg-neutral text-neutral-content">
+		<div class="card-body items-center text-center">
+			<h2 class="card-title">{ user.Username }</h2>
+			<div class="card-actions justify-end">
+				<button class="btn btn-primary">{ userInfo.UserRank }</button>
+				<button class="btn btn-ghost">{ strconv.Itoa(userInfo.UserPoints) }</button>
+			</div>
+		</div>
+	</div>
+	<div class="card w-96 glass">
+		<div class="overflow-x-auto">
+			<table class="table-lg">
+				<!-- head -->
+				<thead>
+					<tr>
+						<th></th>
+						<th>Rank</th>
+						<th>Rooms</th>
+						<th>Players</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- row 1 -->
+					<tr>
+						<th>1</th>
+						<td>Beginner</td>
+						<td>20</td>
+						<td>10</td>
+						<td><button hx-get="/games?rank=beginner" HX-Redirect="true" type="button" class="btn btn-secondary">Play</button></td>
+					</tr>
+					<!-- row 2 -->
+					<tr>
+						<th>2</th>
+						<td>Intermediate</td>
+						<td>20</td>
+						<td>10</td>
+						<td><button hx-get="/games?rank=intermediate" type="button" class="btn btn-secondary">Play</button></td>
+					</tr>
+					<!-- row 3 -->
+					<tr>
+						<th>3</th>
+						<td>Advanced</td>
+						<td>10</td>
+						<td>5</td>
+						<td><button hx-get="/games?rank=advanced" type="button" class="btn btn-secondary">Play</button></td>
+					</tr>
+					<!-- row 4 -->
+					<tr>
+						<th>4</th>
+						<td>Expert</td>
+						<td>5</td>
+						<td>3</td>
+						<td><button hx-get="/games?rank=expert" type="button" class="btn btn-secondary">Play</button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="card w-96 bg-neutral text-neutral-content">
+		<div class="card-body items-center text-center">
+			<h2 class="card-title">Stats!</h2>
+			<div class="card-actions justify-end">
+				<h3 class="btn btn-ghost">Online users : 160</h3>
+				<h3 class="btn btn-ghost">Total room : 50</h3>
+			</div>
+		</div>
 	</div>
 }

@@ -1,0 +1,1 @@
+<div><h1 class=\"text-5xl font-bold mb-4\">WebSocket</h1><div hx-ext=\"ws\" ws-connect=\"/ws\"><div id=\"notifications\"></div><div id=\"chat_room\">...</div><form id=\"form\" ws-send><input name=\"chat_message\"></form></div></div>

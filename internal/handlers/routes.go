@@ -12,4 +12,7 @@ func SetupRoutes(app *echo.Echo) {
 	group.GET("/login", LoginUserPage)
 	group.POST("/login", LoginUser)
 	group.GET("/dashboard", DashboardPage, middlewares.AuthenticatedUser)
+
+	app.GET("/ws", WebSocketHandler)
+	app.GET("/wsc", WscPage)
 }

@@ -8,11 +8,41 @@ import (
 
 	"github.com/a-h/templ"
 	"github.com/google/uuid"
+	"github.com/gorilla/websocket"
 	"github.com/hackertron/go-chess/internal/db"
 	"github.com/hackertron/go-chess/internal/middlewares"
 	"github.com/hackertron/go-chess/internal/views"
 	"github.com/labstack/echo/v4"
 )
+
+var upgrader = websocket.Upgrader{
+	ReadBufferSize:  1024,
+	WriteBufferSize: 1024,
+}
+
+func WebSocketHandler(c echo.Context) error {
+	conn, err := upgrader.Upgrade(c.Response(), c.Request(), nil)
+	if err != nil {
+		return err
+	}
+	defer conn.Close()
+	for {
+		//Read message from client
+		_, message, err := conn.ReadMessage()
+		if err != nil {
+			break
+		}
+		// Print message received from client
+		println("Received message:", string(message))
+
+		// Echo message back to client
+		err = conn.WriteMessage(websocket.TextMessage, message)
+		if err != nil {
+			break
+		}
+	}
+	return nil
+}
 
 func render(ctx echo.Context, cmp templ.Component) error {
 	return cmp.Render(ctx.Request().Context(), ctx.Response())
@@ -132,5 +162,9 @@ func DashboardPage(c echo.Context) error {
 	// 	"user":     user,
 	// 	"userInfo": userInfo,
 	// })
-	return render(c, views.Dashboard(false, user, userInfo))
+	return render(c, views.Dashboard(true, user, userInfo))
+}
+
+func WscPage(c echo.Context) error {
+	return render(c, views.Wsc())
 }

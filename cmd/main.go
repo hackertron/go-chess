@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -13,10 +12,9 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 )
 
-type db_sql struct {
-	db *sql.DB
-}
-
+//	type db_sql struct {
+//		db *sql.DB
+//	}
 func main() {
 	fmt.Println("Go-Chess go brrr 🚀🚀")
 
