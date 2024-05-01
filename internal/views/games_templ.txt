@@ -1,0 +1,1 @@
+<div class=\"text-5xl font-bold mb-4\" id=\"games\">Games</div><select id=\"filter\"><option value=\"all\">All</option> <option value=\"beginner\">beginner</option> <option value=\"intermediate\">intermediate</option> <option value=\"advanced\">advanced</option> <option value=\"expert\">expert</option></select>
